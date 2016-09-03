@@ -916,3 +916,54 @@ type KBDLLHOOKSTRUCT struct {
 }
 
 type HOOKPROC func(int, WPARAM, LPARAM) LRESULT
+
+// add
+type SYSTEMPARAMETERSINFO struct {
+	Size              uint32
+	BorderWidth       int32
+	ScrollWidth       int32
+	ScrollHeight      int32
+	CaptionWidth      int32
+	CaptionHeight     int32
+	CaptionFont       LOGFONT
+	SmCaptionWidth    int32
+	SmCaptionHeight   int32
+	SmCaptionFont     LOGFONT
+	MenuWidth         int32
+	MenuHeight        int32
+	MenuFont          LOGFONT
+	StatusFont        LOGFONT
+	MessageFont       LOGFONT
+	PaddedBorderWidth int32
+}
+
+type MEMORYSTATUSEX struct {
+	Length               uint32
+	MemoryLoad           uint32
+	TotalPhys            uint64
+	AvailPhys            uint64
+	TotalPageFile        uint64
+	AvailPageFile        uint64
+	TotalVirtual         uint64
+	AvailVirtual         uint64
+	AvailExtendedVirtual uint64
+}
+
+type NOTIFYICONDATA struct {
+	CbSize           uint32  		//以字节计的结构大小，以适应不同版本
+	HWnd             HWND	 		//接收托盘图标通知消息的窗口句柄
+	UID              uint32  		//托盘图标的ID号
+	UFlags           uint32    		//指示结构中的哪些成员包含有效数据，可选值：NIF_ICON， NIF_MESSAGE，NIF_TIP，NIF_STATE，NIF_INFO，NIF_GUID
+	UCallbackMessage uint32   		//回调消息ID，由用户自定义。与一个自定义的消息处理函数关联。 
+	HIcon            HICON     		//图标的句柄	
+	SzTip            [128]uint16   	//图标显示的提示信息
+	DwState          uint32			//图标状态：NIS_HIDDEN(图标隐藏)、NIS_SHAREICON(该图标资源被多个图标共享) 
+	DwStateMask      uint32			//图标状态掩码，用以设置dwState 
+	SzInfo           [256]uint16	//气球型提示（Balloon ToolTip）的字符串。 
+	UVersion         uint32			//确定所依赖的版本。0－Win95，NOTIFYICON_VERSION－Win2000 
+	SzInfoTitle      [64]uint16		//气球型提示的标题 
+	DwInfoFlags      uint32			//设置气球型提示所用的图标：NIIF_NONE（无类型）、NIFF_INFO（通知类型）、NIFF_WARNING（警告类型）NIFF_ERROR（错误类型）
+	GUIDItem         GUID			//在Windows XP和Vista中，保留为0；在Windows 7及后续版本，用于标识一个图标的注册GUID值  
+	HBalloonIcon 	 HICON 			//用于Windows Vista及后续版本中，表示自定义气泡图标类型  
+}
+

@@ -115,6 +115,15 @@ var (
 	procSetWindowsHookEx              = moduser32.NewProc("SetWindowsHookExW")
 	procUnhookWindowsHookEx           = moduser32.NewProc("UnhookWindowsHookEx")
 	procCallNextHookEx                = moduser32.NewProc("CallNextHookEx")
+	// add
+	procLoadImage            = moduser32.NewProc("LoadImageW")
+	procCreateMenu           = moduser32.NewProc("CreateMenu")
+	procCreatePopupMenu      = moduser32.NewProc("CreatePopupMenu") //创建一个下拉式菜单、子菜单或快捷菜单。
+	procAppendMenuW          = moduser32.NewProc("AppendMenuW")     //在指定的菜单条、下拉式菜单、子菜单或快捷菜单的末尾追加一个新菜单项。AppendMenu己被lnsertMenultem取代。
+	procSetMenu              = moduser32.NewProc("SetMenu")
+	procSystemParametersInfo = moduser32.NewProc("SystemParametersInfoW")
+	procTrackPopupMenu       = moduser32.NewProc("TrackPopupMenu") //在指定位置显示快捷菜单，并跟踪菜单项的选择。快捷菜单可出现在屏幕上的任何位置。
+	procSetForegroundWindow  = moduser32.NewProc("SetForegroundWindow")
 )
 
 func RegisterClassEx(wndClassEx *WNDCLASSEX) ATOM {
@@ -976,4 +985,75 @@ func CallNextHookEx(hhk HHOOK, nCode int, wParam WPARAM, lParam LPARAM) LRESULT 
 		uintptr(lParam),
 	)
 	return LRESULT(ret)
+}
+
+// add
+func LoadImage(hinst HINSTANCE, name string, Type uint32, cxDesired int32, cyDesired int32, fLoad uint32) HICON {
+	ret, _, _ := procLoadImage.Call(
+		uintptr(hinst),
+		uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(name))),
+		uintptr(Type),
+		uintptr(cxDesired),
+		uintptr(cyDesired),
+		uintptr(fLoad))
+
+	return HICON(ret)
+}
+
+func CreateMenu() HMENU {
+	ret, _, _ := procCreateMenu.Call()
+	return HMENU(ret)
+}
+
+func CreatePopupMenu() HMENU {
+	ret, _, _ := procCreatePopupMenu.Call()
+	return HMENU(ret)
+}
+
+func AppendMenu(menu HMENU, flags uintptr, id uintptr, text string) bool {
+	ret, _, _ := procAppendMenuW.Call(
+		uintptr(menu),
+		flags,
+		id,
+		uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(text))),
+	)
+	return ret != 0
+}
+
+func SetMenu(wnd HWND, menu HMENU) bool {
+	ret, _, _ := procSetMenu.Call(
+		uintptr(wnd),
+		uintptr(menu),
+	)
+	return ret != 0
+}
+
+func SystemParametersInfo(action uint32, uiParam uint32, str *SYSTEMPARAMETERSINFO, winini uint32) bool {
+	ret, _, _ := procSystemParametersInfo.Call(
+		uintptr(action),
+		uintptr(uiParam),
+		uintptr(unsafe.Pointer(str)),
+		uintptr(winini),
+	)
+	return ret != 0
+}
+
+func TrackPopupMenu(menu HMENU, flags uint, x, y int, wnd HWND) bool {
+	ret, _, _ := procTrackPopupMenu.Call(
+		uintptr(menu),
+		uintptr(flags),
+		uintptr(x),
+		uintptr(y),
+		0,
+		uintptr(wnd),
+		0,
+	)
+	return ret != 0
+}
+
+func SetForegroundWindow(wnd HWND) bool {
+	ret, _, _ := procSetForegroundWindow.Call(
+		uintptr(wnd),
+	)
+	return ret != 0
 }

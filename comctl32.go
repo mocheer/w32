@@ -21,6 +21,8 @@ var (
 	procImageList_ReplaceIcon   = modcomctl32.NewProc("ImageList_ReplaceIcon")
 	procImageList_Remove        = modcomctl32.NewProc("ImageList_Remove")
 	procTrackMouseEvent         = modcomctl32.NewProc("_TrackMouseEvent")
+	// add
+	procMakeDragList = modcomctl32.NewProc("MakeDragList")
 )
 
 func InitCommonControlsEx(lpInitCtrls *INITCOMMONCONTROLSEX) bool {
@@ -105,5 +107,11 @@ func TrackMouseEvent(tme *TRACKMOUSEEVENT) bool {
 	ret, _, _ := procTrackMouseEvent.Call(
 		uintptr(unsafe.Pointer(tme)))
 
+	return ret != 0
+}
+
+// add
+func MakeDragList(hlb HWND) bool {
+	ret, _, _ := procMakeDragList.Call(uintptr(hlb))
 	return ret != 0
 }

@@ -228,6 +228,30 @@ const (
 	BN_KILLFOCUS     = 7
 )
 
+//add
+const (
+	IMAGE_BITMAP      = 0
+	IMAGE_ICON        = 1
+	IMAGE_CURSOR      = 2
+	IMAGE_ENHMETAFILE = 3
+)
+const (
+	LR_DEFAULTCOLOR     = 0
+	LR_MONOCHROME       = 1
+	LR_COLOR            = 2
+	LR_COPYRETURNORG    = 4
+	LR_COPYDELETEORG    = 8
+	LR_LOADFROMFILE     = 16 //根据参数lpszName的值装载图像。若标记未被给定，lpszName的值为资源名称。
+	LR_LOADTRANSPARENT  = 32
+	LR_LOADREALSIZE     = 128
+	LR_DEFAULTSIZE      = 0x0040 //若cxDesired或cyDesired为零，使用系统指定的公制值标识光标或图标的宽和高。如果不被设置且cxDesired或cyDesired为零，函数使用实际资源尺寸。如果有多个图像，则使用第一个图像的大小。
+	LR_VGACOLOR         = 0x0080
+	LR_LOADMAP3DCOLORS  = 4096
+	LR_CREATEDIBSECTION = 8192
+	LR_COPYFROMRESOURCE = 0x4000
+	LR_SHARED           = 32768
+)
+
 // GetWindowLong and GetWindowLongPtr constants
 const (
 	GWL_EXSTYLE     = -20
@@ -2678,4 +2702,134 @@ const (
 	WH_MSGFILTER       = -1
 	WH_SHELL           = 10
 	WH_SYSMSGFILTER    = 6
+)
+
+// add
+
+// Menu Flags
+const (
+	MF_INSERT = 0x00000000
+	MF_CHANGE = 0x00000080
+	MF_APPEND = 0x00000100
+	MF_DELETE = 0x00000200
+	MF_REMOVE = 0x00001000
+
+	MF_BYCOMMAND  = 0x00000000 //表示参数ultemHilite给出了菜单项的标识符。
+	MF_BYPOSITION = 0x00000400 //表示参数ultemHilite给出了菜单项相对于零的位置。
+
+	MF_SEPARATOR = 0x00000800 //画一条水平分隔线，只用于弹出式菜单
+
+	MF_ENABLED  = 0x00000000 //允许此菜单命令，恢复到正常状态
+	MF_GRAYED   = 0x00000001 //禁止此菜单命令，变灰显示
+	MF_DISABLED = 0x00000002 //禁止此菜单命令，但是不变灰显示
+
+	MF_CHECKED         = 0x00000008 //显示默认复选标志
+	MF_UNCHECKED       = 0x00000000 //清除复选标志
+	MF_USECHECKBITMAPS = 0x00000200
+
+	MF_STRING    = 0x00000000 //指定此菜单命令是一个字符串
+	MF_BITMAP    = 0x00000004 //指定此菜单命令是一个位图
+	MF_OWNERDRAW = 0x00000100 //指定该命令是自画式菜单命令
+
+	MF_POPUP        = 0x00000010 //指定菜单命令有一个关联的弹出式菜单
+	MF_MENUBARBREAK = 0x00000020 //对于静态菜单，放到新行；对于弹出菜单，放到新栏，栏间有分隔线
+	MF_MENUBREAK    = 0x00000040 //对于静态菜单，放到新行；对于弹出菜单，放到新栏，栏间无分隔线
+
+	MF_UNHILITE = 0x00000000 //撤消加亮状态
+	MF_HILITE   = 0x00000080 //设置加亮状态
+
+	MF_DEFAULT = 0x00001000
+
+	MF_SYSMENU      = 0x00002000 //显示系统弹出式菜单
+	MF_HELP         = 0x00004000
+	MF_RIGHTJUSTIFY = 0x00004000
+
+	MF_MOUSESELECT = 0x00008000
+	MF_END         = 0x00000080 // Obsolete -- only used by old RES files
+)
+
+// System Parameters Info
+const (
+	SPI_GETNONCLIENTMETRICS = 0x0029
+)
+
+// List Box
+const (
+	LB_RESETCONTENT = 0x0184
+	LB_ADDSTRING    = 0x0180
+	LB_GETTEXT      = 0x0189
+	LB_GETSEL       = 0x0187
+	LB_GETCOUNT     = 0x018B
+	LB_SETCURSEL    = 0x0186
+	LB_DELETESTRING = 0x0182
+)
+
+const (
+	LBS_NOTIFY = 0x0001
+)
+
+const (
+	LBN_SELCHANGE = 1
+)
+
+// NotifyIcon messages
+const (
+	NIM_ADD        = 0x00000000 //往状态区添加一个图标
+	NIM_MODIFY     = 0x00000001 //修改状态区的一个图标
+	NIM_DELETE     = 0x00000002 //删除状态区的一个图标
+	NIM_SETFOCUS   = 0x00000003 //将焦点重新设给任务栏的通知区域；一般通知区域的图标在完成UI操作时使用该函数来重新获取焦点
+	NIM_SETVERSION = 0x00000004 //指示通知区域要遵循参数lpdata指向的结构中的参数UVersion指定的版本来操作，版本号指定了哪些成员是可识别的
+)
+
+// NotifyIcon states
+const (
+	NIS_HIDDEN     = 0x00000001 //图标隐藏
+	NIS_SHAREDICON = 0x00000002 //图标共享
+)
+
+// NotifyIcon flags
+const (
+	NIF_MESSAGE  = 0x00000001 //设置UCallbackMessage有效
+	NIF_ICON     = 0x00000002 //设置HIcon有效
+	NIF_TIP      = 0x00000004 //设置SzTip有效
+	NIF_STATE    = 0x00000008 //设置dwState和dwStateMask参数有效
+	NIF_INFO     = 0x00000010
+	NIF_GUID     = 0x00000020
+	NIF_REALTIME = 0x00000040
+	NIF_SHOWTIP  = 0x00000080
+)
+
+// NotifyIcon info flags
+const (
+	NIIF_NONE    = 0x00000000 //无类型
+	NIIF_INFO    = 0x00000001 //通知类型
+	NIIF_WARNING = 0x00000002 //警告类型
+	NIIF_ERROR   = 0x00000003 //错误类型
+	NIIF_USER    = 0x00000004
+	NIIF_NOSOUND = 0x00000010
+)
+const (
+	NOTIFYICON_VERSION   = 3
+	NOTIFYICON_VERSION_4 = 4
+)
+
+// TrackPopupMenu[Ex] flags
+const (
+	TPM_CENTERALIGN     = 0x0004 //若设置此标志，函数将按参数x指定的坐标水平居中放置快捷菜单。
+	TPM_LEFTALIGN       = 0x0000 //若设置此标志，函数使快捷菜单的左边界与由参数X指定的坐标对齐。
+	TPM_RIGHTALIGN      = 0x0008 //若设置此标志，函数使快捷菜单的右边界与由参数X指定的坐标对齐。
+	TPM_BOTTOMALIGN     = 0x0020 //若设置此标志，函数使快捷菜单的下边界与由参数y指定的坐标对齐。
+	TPM_TOPALIGN        = 0x0000 //若设置此标志，函数使快捷菜单的上边界与由参数y指定的坐标对齐。
+	TPM_VCENTERALIGN    = 0x0010 //若设置此标志，函数将按参数y指定的坐标垂直居中放置快捷菜单
+	TPM_NONOTIFY        = 0x0080 //若设置此标志，当用户单击菜单项时函数不发送通知消息。
+	TPM_RETURNCMD       = 0x0100 //若设置此标志；函数将用户所选菜单项的标识符返回到返回值里。
+	TPM_LEFTBUTTON      = 0x0000 //若设置此标志，用户只能用鼠标左键选择菜单项。
+	TPM_RIGHTBUTTON     = 0x0002 //若设置此标志，用户能用鼠标左、右键选择菜单项。
+	TPM_HORNEGANIMATION = 0x0800
+	TPM_HORPOSANIMATION = 0x0400
+	TPM_NOANIMATION     = 0x4000
+	TPM_VERNEGANIMATION = 0x2000
+	TPM_VERPOSANIMATION = 0x1000
+	TPM_HORIZONTAL      = 0x0000
+	TPM_VERTICAL        = 0x0040
 )

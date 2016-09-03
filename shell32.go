@@ -22,6 +22,8 @@ var (
 	procDragFinish          = modshell32.NewProc("DragFinish")
 	procShellExecute        = modshell32.NewProc("ShellExecuteW")
 	procExtractIcon         = modshell32.NewProc("ExtractIconW")
+	// add
+	procShellNotifyIcon = modshell32.NewProc("Shell_NotifyIconW")
 )
 
 func SHBrowseForFolder(bi *BROWSEINFO) uintptr {
@@ -151,3 +153,21 @@ func ExtractIcon(lpszExeFileName string, nIconIndex int) HICON {
 
 	return HICON(ret)
 }
+
+// 注意：对于Windows 2000(Shell32.dll version 5.0)，Shell_NotifyIcon对于鼠标和键盘事件的处理与早期的操作系统的不同点在于：
+// （1）用户使用键盘选择了通知图标的快捷菜单，Shell将发送WM_CONTEXTMENU消息给图标对应的应用程序，而早期操作系统则发送WM_RBUTTONDOWN和WM_RBUTTONUP消息；
+// （2）用户使用键盘选择通知图标，并使用空格键或Enter键激活它，则Shell将发送NIN_KEYSELECT通知给应用程序，而早期版本则发送WM_RBUTTONDOWN和WM_RBUTTONUP消息；
+// （3）用户使用鼠标选择通知图标，并使用Enter键激活它，Shell将发送NIN_SELECT通知给应用程序，而早期版本发送WM_RBUTTONDOWN和WM_RBUTTONUP消息；
+// 对于Windows XP(Shell32.dll version 6.0)，当用户将鼠标指向关联着气泡通知的图标时，Shell将发送下列消息：
+// （1）NIN_BALLOONSHOW：当气泡显示时发送（气泡在队列中排队）；
+// （2）NIN_BALLOONHIDE：当气泡消失时发送，例如，当图标删除时。在气泡因为超时或者用户鼠标单击后消失时，不发送该消息；
+// （3）NIN_BALLOONTIMEOUT：气泡超时后消失时发送；
+// （4）NIN_BALLOONUSERCLICK：用户鼠标单击气泡使气泡消失时发送；
+func Shell_NotifyIcon(message uint32, nid *NOTIFYICONDATA) bool {
+	ret, _, _ := procShellNotifyIcon.Call(
+		uintptr(message),
+		uintptr(unsafe.Pointer(nid)),
+	)
+	return ret != 0
+}
+
